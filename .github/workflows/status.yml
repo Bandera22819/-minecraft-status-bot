@@ -6,16 +6,29 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: minecraft-status
+  cancel-in-progress: false
 
 jobs:
-  send-status:
+  monitor:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Send status
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Poll Telegram updates and send Minecraft status
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python3 monitor.py
+      - name: Save subscribers and update offset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bot_state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update bot subscribers"
+            git push
+          fi
+          
