@@ -5,7 +5,7 @@ import urllib.request
 from pathlib import Path
 
 SERVER = "claude1488-oHtN.aternos.me:29651"
-BOT_TOKEN = os.environ["BOT_TOKEN"]
+BOT_TOKEN = os.environ["9051358163:AAGadXnGLZPUqPlcZkemxkpmzfa-821jXZw"]
 STATE_FILE = Path("bot_state.json")
 API = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
